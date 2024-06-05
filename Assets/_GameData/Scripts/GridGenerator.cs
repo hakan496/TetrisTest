@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _GameData.Scripts
@@ -24,7 +25,8 @@ namespace _GameData.Scripts
                 for (int j = 0; j < 8; j++)
                 {
                     var gridUnitIns = Instantiate(gridUnitPrefab, instantiatePos,Quaternion.identity,gridUnits.transform);
-                    gridUnitsArray[i,j] = gridUnitIns;
+                    gridUnitsArray[j,i] = gridUnitIns;
+                    gridUnitIns.Init(j,i);
                     instantiatePos.x++;
                 }
                 instantiatePos.y--;
@@ -32,5 +34,9 @@ namespace _GameData.Scripts
             }
             _gridUnitsController = new GridUnitsController(gridUnitsArray);
         }
+        
+             
+     
+
     }
 }

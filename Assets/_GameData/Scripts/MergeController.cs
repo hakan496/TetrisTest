@@ -101,6 +101,8 @@ namespace _GameData.Scripts
                 yield return new WaitForEndOfFrame();
             }
 
+            ProgressController.OnScore.Invoke(10,data.blocks[0].transform.position);
+            
             foreach (var block in data.blocks)
             {
                 block.Destroy();
@@ -111,7 +113,7 @@ namespace _GameData.Scripts
             _datas = new List<MergeData>();
             _isMergeDelayStarted = false;
             OnTryToFindMergedData.Invoke();
-          
+           
         }
         
 

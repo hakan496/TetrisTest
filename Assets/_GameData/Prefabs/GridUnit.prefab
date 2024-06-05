@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isFull: 0
+  _meshRenderer: {fileID: 413146923670027244}
 --- !u!65 &7642315921034183536
 BoxCollider:
   m_ObjectHideFlags: 0

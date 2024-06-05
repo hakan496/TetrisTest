@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace _GameData.Scripts
@@ -11,6 +12,9 @@ namespace _GameData.Scripts
 
         public LayerMask blocksLayer;
         public LayerMask dragPanelLayer;
+
+
+        public static Action<BlocksParent> OnHoldingBlock;
         public void Awake()
         {
             _mainCam = Camera.main;
@@ -28,6 +32,7 @@ namespace _GameData.Scripts
                         _isHold = true;
                         _holdingBlocks = blocksParent;
                         _holdingBlocks.transform.localScale = Vector3.one;
+                        OnHoldingBlock.Invoke(_holdingBlocks);
                     }
                   
                 }

@@ -10,6 +10,8 @@ namespace _GameData.Scripts
         public ColorsType ColorsType => colorsType;
         private GridUnit _currentGridUnit;
 
+        public GridUnit CurrentGridUnit => _currentGridUnit;
+
         public MeshRenderer meshRenderer;
 
         public LayerMask currentLayer;
