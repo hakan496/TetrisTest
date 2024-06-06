@@ -15,6 +15,7 @@ namespace _GameData.Scripts
 
 
         public static Action<BlocksParent> OnHoldingBlock;
+        public static Action<BlocksParent> OnDropBlock;
         public void Awake()
         {
             _mainCam = Camera.main;
@@ -53,6 +54,7 @@ namespace _GameData.Scripts
             {
                 if (_isHold)
                 {
+                    OnDropBlock.Invoke(_holdingBlocks);
                     _holdingBlocks.Drop();
                     _isHold = false;
                 }

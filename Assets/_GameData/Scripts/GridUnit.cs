@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _GameData.Scripts
 {
@@ -7,6 +8,7 @@ namespace _GameData.Scripts
         public bool isFull;
 
         private Block _currentBlock;
+        
 
         private int _indexX;
 
