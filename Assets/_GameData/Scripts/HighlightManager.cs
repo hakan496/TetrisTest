@@ -9,7 +9,7 @@ namespace _GameData.Scripts
         public List<HighlightData> highlightDatas;
 
         public static Action<GridUnit, GridUnit, ColorsType> OnHighlightGrids;
-        public static Action<GridUnit, GridUnit> OnResetHighlightGrids;
+        public static Action OnResetHighlightGrids;
 
         private void OnEnable()
         {
@@ -20,18 +20,18 @@ namespace _GameData.Scripts
         private void OnHighlightGridsHandler(GridUnit firstGrid, GridUnit secondGrid, ColorsType colorsType)
         {
             var betweenGrids = GridUnitsController.FindGridsBetween(firstGrid, secondGrid);
-
+            betweenGrids.Add(firstGrid);
+            
             foreach (var gridUnit in betweenGrids)
             {
                 gridUnit.SetMaterial(GetHighlightDataByColorType(colorsType).highlightMaterial);
             }
         }
         
-        private void OnResetHighlightGridsHandler(GridUnit firstGrid,GridUnit secondGrid)
+        
+        private void OnResetHighlightGridsHandler()
         {
-            var betweenGrids = GridUnitsController.FindGridsBetween(firstGrid, secondGrid);
-
-            foreach (var gridUnit in betweenGrids)
+            foreach (var gridUnit in GridUnitsController.GridUnits)
             {
                 gridUnit.ResetMaterial();
             }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7907783191402964030}
   - component: {fileID: 2348368749658395898}
   - component: {fileID: 2669503956661587371}
+  - component: {fileID: 1782641911377159156}
   m_Layer: 6
   m_Name: Block_3x_1
   m_TagString: Untagged
@@ -66,6 +67,19 @@ MonoBehaviour:
   gridUnitLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &1782641911377159156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7075407014997913255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ea5233f1f25b94a93028a852e213c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightControllers: []
 --- !u!1001 &2383756090004263147
 PrefabInstance:
   m_ObjectHideFlags: 0

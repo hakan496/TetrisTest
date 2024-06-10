@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,105 +10,73 @@ namespace _GameData.Scripts
         public LayerMask blockLayer;
         public LayerMask gridLayer;
 
-        private BlocksParent _blocksParent;
         private GridUnit _findGridUnit;
+        private List<GridUnit> _secondGridUnits;
+
         private GridUnit _firstHighLightGridUnit;
         private GridUnit _secondHighLightGridUnit;
         private Block _block;
-        
-        private bool _isItSameHoldingBlockParent;
-        private bool _isFirstHighlightGridFind;
 
-        private void OnEnable()
-        {
-            InputManager.OnHoldingBlock += OnHoldingBlockHandler;
-            InputManager.OnDropBlock += OnDropBlockHandler;
-        }
 
         public void Awake()
         {
-            _blocksParent = transform.parent.GetComponent<BlocksParent>();
+            _secondGridUnits = new List<GridUnit>();
             _block = GetComponent<Block>();
         }
 
         private void Start()
         {
+            StartCoroutine(Delay());
+        }
+
+        private IEnumerator Delay()
+        {
+            yield return new WaitForSeconds(.1f);
             FindEmptyDirection();
         }
 
-        private void FindEmptyDirection()
+        public void FindEmptyDirection()
         {
             var firstIndex = willBeCheckedDirections.Count - 1;
             for (int i = firstIndex;  i > -1 ; i--)
             {
-                if (Physics.Raycast(transform.position, willBeCheckedDirections[i], out var hitInfo, 1, blockLayer))
+                if (Physics.Raycast(transform.position, willBeCheckedDirections[i], out var hitInfo, 0.56f, blockLayer))
                 {
                     willBeCheckedDirections.Remove(willBeCheckedDirections[i]);
                 }
             }
         }
-        
-        private void OnHoldingBlockHandler(BlocksParent blocksParent)
-        {
-            if (blocksParent == _blocksParent)
-            {
-                _isItSameHoldingBlockParent = true;
-            }
-        }
-        
-        private void OnDropBlockHandler(BlocksParent blocksParent)
-        {
-            if (blocksParent == _blocksParent)
-            {
-                if(_isFirstHighlightGridFind) HighlightManager.OnResetHighlightGrids.Invoke(_firstHighLightGridUnit,_secondHighLightGridUnit);
-                _isItSameHoldingBlockParent = false;
-            }
-        }
 
-        public void Update()
+        public void Highlight(GridUnit gridUnit)
         {
-            if (_isItSameHoldingBlockParent)
+            if (_findGridUnit != gridUnit)
             {
-                if (Physics.Raycast(transform.position, Vector3.forward, out var gridHitInfo, 50, gridLayer) && gridHitInfo.transform.TryGetComponent(out GridUnit gridUnit))
+                HighlightManager.OnResetHighlightGrids.Invoke();
+            }
+            _findGridUnit = gridUnit;
+           
+            foreach (var direction in willBeCheckedDirections)
+            {
+                if (Physics.Raycast(gridUnit.transform.position, direction, out var blockHitInfo, 50, blockLayer) && blockHitInfo.transform.TryGetComponent(out Block block) )
                 {
-                    _findGridUnit = gridUnit;
-                    if (_isFirstHighlightGridFind && _firstHighLightGridUnit != gridUnit)
+                    if (block.ColorsType == _block.ColorsType)
                     {
-                        HighlightManager.OnResetHighlightGrids.Invoke(_firstHighLightGridUnit,_secondHighLightGridUnit);
-                    }
-                    foreach (var direction in willBeCheckedDirections)
-                    {
-                        if (Physics.Raycast(gridUnit.transform.position, direction, out var blockHitInfo, 50, blockLayer) && blockHitInfo.transform.TryGetComponent(out Block block) )
-                        {
-                            if (block.ColorsType == _block.ColorsType)
-                            {
-                                if (_firstHighLightGridUnit == null)
-                                {
-                                    _isFirstHighlightGridFind = true;
-                                    _firstHighLightGridUnit = gridUnit;
-                                    _secondHighLightGridUnit = block.CurrentGridUnit;
-                                    HighlightManager.OnHighlightGrids.Invoke(_firstHighLightGridUnit,block.CurrentGridUnit,block.ColorsType);
-                                }
-                                else if(_firstHighLightGridUnit != gridUnit || _findGridUnit == _firstHighLightGridUnit)
-                                {
-                                    print("erere");
-                                    HighlightManager.OnResetHighlightGrids.Invoke(_firstHighLightGridUnit,_secondHighLightGridUnit);
-                                    _firstHighLightGridUnit = gridUnit;
-                                    _secondHighLightGridUnit = block.CurrentGridUnit;
-                                    HighlightManager.OnHighlightGrids.Invoke(_firstHighLightGridUnit,block.CurrentGridUnit,block.ColorsType);
-                                }
-                            }
-                        }
+                        _secondGridUnits.Add(block.CurrentGridUnit);
+                        HighlightManager.OnHighlightGrids.Invoke(gridUnit,block.CurrentGridUnit,block.ColorsType);
                     }
                 }
-            }
+            } 
         }
-
-        private void OnDestroy()
+        
+        public GridUnit FindGrid()
         {
-            InputManager.OnHoldingBlock -= OnHoldingBlockHandler;
-            InputManager.OnDropBlock -= OnDropBlockHandler;
+            if (Physics.Raycast(transform.position, Vector3.forward, out var gridHitInfo, 50, gridLayer) && gridHitInfo.transform.TryGetComponent(out GridUnit gridUnit))
+            {
+                return gridUnit;
+            }
+            return null;
         }
     
     }
+    
 }

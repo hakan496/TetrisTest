@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3495614593170259643}
   - component: {fileID: 1933327504760241246}
   - component: {fileID: -7800056767539105612}
+  - component: {fileID: 5820032631429956060}
   m_Layer: 6
   m_Name: Block_4x_Cube
   m_TagString: Untagged
@@ -67,6 +68,19 @@ MonoBehaviour:
   gridUnitLayer:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &5820032631429956060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8143603366320112672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ea5233f1f25b94a93028a852e213c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightControllers: []
 --- !u!1001 &2273153406203212812
 PrefabInstance:
   m_ObjectHideFlags: 0
