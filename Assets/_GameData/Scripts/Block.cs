@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace _GameData.Scripts
@@ -12,9 +14,11 @@ namespace _GameData.Scripts
 
         public GridUnit CurrentGridUnit => _currentGridUnit;
 
-        public MeshRenderer meshRenderer;
+        public SkinnedMeshRenderer meshRenderer;
 
         public LayerMask currentLayer;
+        public Action OnBlockDestroy;
+
         public void Init(ColorData data)
         {
             meshRenderer.material = data.material;
@@ -121,6 +125,7 @@ namespace _GameData.Scripts
         {
             MergeController.OnTryToFindMergedData -= OnTryToFindMergedDataHandler;
             _currentGridUnit.EmptySlot();
+            OnBlockDestroy.Invoke();
             Destroy(gameObject);
         }
     }
